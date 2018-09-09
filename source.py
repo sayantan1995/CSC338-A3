@@ -10,7 +10,7 @@ import pickle
 
 def train(data):
 
-    d = len 
+    d = len(data)
     Sigma = []
     mu = []
     var = np.zeros(d)
@@ -67,12 +67,12 @@ def combine(Sigma, var, beta):
 def logMVNchol(X, mu, Sigma):
 
     [M,N] = X.shape
-    logP = np.zero(M)
+    logP = np.zeros(M)
     L = la.cholesky(Sigma, lower = True)
     logDet = nla.slogdet(Sigma)[1]
     logAlpha = np.log(2 * np.pi) * N/2. + logDet
 
-    for m in range(O, M):
+    for m in range(0, M):
         x = X[m,:] - mu
         y = la.solve_triangular(L, x, lower = True, check_finite = False)
         logP [m] = -np.dot(y, y)/2. - logAlpha
@@ -114,8 +114,8 @@ def evaluate(logP, X, Y):
 # part c
 
 def ocr():
-    with open('mnist_digits/mnist.pickle', 'rb') as f:
-        date = pickle.load(f)
+    with open('mnist.pickle', 'rb') as f:
+        data = pickle.load(f)
 
     (mu, Sigma, var) = train(data['training'])
     print('training done')
@@ -145,7 +145,7 @@ def showImages(N, data, title):
 
     for i in range(0, N):
         x = data[i]
-        y = np.reshape(x, (m, n))
+        y = np.reshape(x, (m, m))
         plt.subplot(M, M, i + 1)
         plt.axis('off')
         plt.imshow(y, cmap = 'Greys', interpolation = 'nearest')
